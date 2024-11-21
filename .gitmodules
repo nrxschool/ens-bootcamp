@@ -1,0 +1,3 @@
+[submodule "teste/lib/forge-std"]
+	path = aula2/flipper/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
