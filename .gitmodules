@@ -4,3 +4,9 @@
 [submodule "aula3/advance/lib/forge-std"]
 	path = aula3/advance/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "aula4/lib/forge-std"]
+	path = aula4/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "aula4/web3/lib/solady"]
+	path = aula4/web3/lib/solady
+	url = https://github.com/vectorized/solady
