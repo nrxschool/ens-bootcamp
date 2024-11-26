@@ -1,4 +1,4 @@
-[submodule "teste/lib/forge-std"]
+[submodule "aula2/lib/forge-std"]
 	path = aula2/flipper/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
 [submodule "aula3/advance/lib/forge-std"]

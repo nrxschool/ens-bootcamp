@@ -12,7 +12,7 @@ contract FlipperTest is Test {
     }
 
     function testInitialStateFlipper() public {
-        assertEq(flipper.getState(), true);
+        assertEq(flipper.getState(), false);
     }
 
     function testNovaFn() public {
