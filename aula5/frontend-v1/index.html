@@ -40,6 +40,7 @@
             if (typeof window.ethereum !== 'undefined') {
                 try {
                     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    console.log('Connected accounts:', accounts);
                     const walletAddress = accounts[0];
 
                     if (walletAddress) {
