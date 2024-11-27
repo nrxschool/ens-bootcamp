@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Wallet</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilo adicional para o link desabilitado */
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Muda o cursor quando hover sobre os botões */
+        button {
+            cursor: pointer;
+        }
+
+        button:hover {
+            cursor: pointer;
+            background-color: #e0e0e0;
+            /* Exemplo de mudança de cor ao passar o mouse */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Connect Your Wallet</h1>
+        <button id="connectWallet">Connect Wallet</button>
+        <footer>
+            <button id="page2Link" class="disabled" onclick="window.location.href='page2.html'">Go to Page 2</button>
+        </footer>
+    </div>
+    <script>
+        document.getElementById('connectWallet').addEventListener('click', async () => {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const walletAddress = accounts[0];
+
+                    if (walletAddress) {
+                        // Salva o endereço no localStorage
+                        localStorage.setItem('walletAddress', walletAddress);
+
+                        // Habilita o botão e remove o estado desabilitado
+                        const page2Button = document.getElementById('page2Link');
+                        page2Button.classList.remove('disabled');
+                        page2Button.disabled = false;
+
+                        // Adiciona o redirecionamento ao clicar
+                        page2Button.addEventListener('click', () => {
+                            window.location.href = 'page2.html';
+                        });
+
+                        alert(`Wallet connected: ${walletAddress}`);
+                    }
+                } catch (error) {
+                    console.error('User denied account access:', error);
+                }
+            } else {
+                alert('Please install MetaMask!');
+            }
+        });
+
+    </script>
+</body>
+
+</html>

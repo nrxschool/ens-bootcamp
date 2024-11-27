@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Info</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Wallet Information</h1>
+        <p><strong>Selected Network:</strong> <span id="selectedNetwork">Ethereum Mainnet</span></p>
+        <p><strong>Balance:</strong> <span id="balance">-</span> ETH</p>
+        <p><strong>Current Block:</strong> <span id="currentBlock">-</span></p>
+        <div>
+            <label><input type="radio" name="network" value="mainnet" checked> Ethereum Mainnet</label>
+            <label><input type="radio" name="network" value="holesky"> Holesky</label>
+            <label><input type="radio" name="network" value="localhost"> Local Net</label>
+        </div>
+        <footer>
+            <a href="page3.html">Go to Page 3</a>
+        </footer>
+    </div>
+
+    <script>
+        // Define os parâmetros das redes
+        const networks = {
+            mainnet: {
+                name: "Ethereum Mainnet",
+                rpc: "",
+            },
+            holesky: {
+                name: "Holesky",
+                rpc: "",
+            },
+            localhost: {
+                name: "Local Net",
+                rpc: "http://127.0.0.1:8545",
+            },
+        };
+
+        const selectedNetworkEl = document.getElementById("selectedNetwork");
+        const balanceEl = document.getElementById("balance");
+        const currentBlockEl = document.getElementById("currentBlock");
+
+        // Recupera o endereço da carteira conectado
+        const walletAddress = localStorage.getItem("walletAddress");
+
+        if (!walletAddress) {
+            alert("Wallet not connected. Redirecting to the home page.");
+            window.location.href = "index.html";
+        }
+
+        // Define a rede inicial como Mainnet
+        let selectedNetwork = "mainnet";
+
+        // Atualiza a interface com base na rede selecionada
+        async function updateNetworkInfo() {
+            const network = networks[selectedNetwork];
+            selectedNetworkEl.textContent = network.name;
+
+            try {
+                // Usa o JSON-RPC para obter informações da rede
+                const response = await fetch(network.rpc, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        jsonrpc: "2.0",
+                        method: "eth_getBalance",
+                        params: [walletAddress, "latest"],
+                        id: 1,
+                    }),
+                });
+
+                const data = await response.json();
+                const balanceInWei = data.result;
+                const balanceInEth = parseFloat(parseInt(balanceInWei, 16) / 1e18).toFixed(4);
+                balanceEl.textContent = balanceInEth;
+
+                // Obter o bloco atual
+                const blockResponse = await fetch(network.rpc, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        jsonrpc: "2.0",
+                        method: "eth_blockNumber",
+                        params: [],
+                        id: 1,
+                    }),
+                });
+
+                const blockData = await blockResponse.json();
+                const blockNumber = parseInt(blockData.result, 16);
+                currentBlockEl.textContent = blockNumber;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                balanceEl.textContent = "Error";
+                currentBlockEl.textContent = "Error";
+            }
+        }
+
+        // Atualiza a rede ao mudar a seleção
+        document.querySelectorAll('input[name="network"]').forEach((radio) => {
+            radio.addEventListener("change", (event) => {
+                selectedNetwork = event.target.value;
+                updateNetworkInfo();
+            });
+        });
+
+        // Atualiza a informação inicial
+        updateNetworkInfo();
+    </script>
+</body>
+
+</html>
