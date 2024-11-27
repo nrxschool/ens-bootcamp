@@ -5,6 +5,16 @@ import abi from './Token';
 import { anvil } from 'viem/chains';
 import { privateKeyToAccount } from 'viem/accounts';
 
+// READ
+// Provider
+// input -> RPC URL
+// output <-  object.connect.blockchain()
+
+// WRITE
+// Signer
+// Browser (js)
+// Backend (node)
+
 @Injectable()
 export class ERC20Service {
   private client;
