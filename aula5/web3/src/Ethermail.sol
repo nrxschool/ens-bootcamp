@@ -13,7 +13,7 @@ contract Ethermail {
         string content;
     }
 
-    function send(string calldata _content) external payable {
+    function sendMail(string calldata _content) external payable {
         if (msg.value < MESSAGE_COST) {
             revert("Insufficient balance to send message.");
         }

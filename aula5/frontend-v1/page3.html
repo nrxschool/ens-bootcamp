@@ -52,38 +52,76 @@
         </footer>
     </div>
 
-    <script>
+    <script type="module">
+        import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
+
+
         // Endereço do contrato Ethermail
-        const contractAddress = "0xYourContractAddress"; // Substitua pelo endereço do contrato
+        const contractAddress = "0x8438Ad1C834623CfF278AB6829a248E37C2D7E3f"; // Substitua pelo endereço do contrato
         const contractABI = [
             {
-                "constant": true,
+                "type": "function",
+                "name": "MESSAGE_COST",
                 "inputs": [],
-                "name": "getInbox",
-                "outputs": [
-                    {
-                        "components": [
-                            { "name": "sender", "type": "address" },
-                            { "name": "content", "type": "string" }
-                        ],
-                        "name": "",
-                        "type": "tuple[]"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
+                "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+                "stateMutability": "view"
             },
             {
-                "constant": false,
-                "inputs": [{ "name": "_content", "type": "string" }],
-                "name": "send",
+                "type": "function",
+                "name": "getInbox",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "tuple[]",
+                        "internalType": "struct Ethermail.Mail[]",
+                        "components": [
+                            { "name": "sender", "type": "address", "internalType": "address" },
+                            { "name": "content", "type": "string", "internalType": "string" }
+                        ]
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "inbox",
+                "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+                "outputs": [
+                    { "name": "sender", "type": "address", "internalType": "address" },
+                    { "name": "content", "type": "string", "internalType": "string" }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "sendMail",
+                "inputs": [
+                    { "name": "_content", "type": "string", "internalType": "string" }
+                ],
                 "outputs": [],
-                "payable": true,
-                "stateMutability": "payable",
-                "type": "function"
+                "stateMutability": "payable"
+            },
+            {
+                "type": "event",
+                "name": "NewInbox",
+                "inputs": [
+                    {
+                        "name": "sender",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "content",
+                        "type": "string",
+                        "indexed": false,
+                        "internalType": "string"
+                    }
+                ],
+                "anonymous": false
             }
-        ];
+        ]
 
         // Valor em ETH necessário para enviar uma mensagem
         const messageCost = "0.0001";
@@ -99,11 +137,11 @@
             if (typeof window.ethereum !== "undefined") {
                 try {
                     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-                    const provider = new ethers.providers.Web3Provider(window.ethereum);
-                    const signer = provider.getSigner();
+                    const provider = new ethers.BrowserProvider(window.ethereum);
+                    const signer = await provider.getSigner();
                     contract = new ethers.Contract(contractAddress, contractABI, signer);
+                    console.log(accounts[0])
 
-                    // Carrega as mensagens
                     loadMessages();
                 } catch (error) {
                     alert("Error connecting to MetaMask: " + error.message);
@@ -136,6 +174,8 @@
 
         // Envia uma nova mensagem
         async function sendMessage() {
+            console.log("Foi")
+            console.log(contract)
             const content = messageContentElement.value.trim();
             if (!content) {
                 alert("Message content cannot be empty.");
@@ -143,8 +183,9 @@
             }
 
             try {
-                const tx = await contract.send(content, {
-                    value: ethers.utils.parseEther(messageCost),
+                console.log(contract)
+                const tx = await contract.sendMail(content, {
+                    value: ethers.parseEther(messageCost),
                 });
                 await tx.wait(); // Aguarda a confirmação da transação
                 alert("Message sent successfully!");
@@ -157,10 +198,16 @@
         }
 
         // Adiciona evento ao botão
-        sendMessageButton.addEventListener("click", sendMessage);
 
-        // Configura o contrato ao carregar a página
+
+
+        sendMessageButton.addEventListener("click", async () => {
+            console.log("aqui!")
+            sendMessage()
+        });
+
         setupContract();
+
     </script>
 </body>
 
