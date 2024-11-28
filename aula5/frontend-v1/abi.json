@@ -1,0 +1,67 @@
+
+  {
+    "abi": [
+    {
+      "type": "function",
+      "name": "MESSAGE_COST",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getInbox",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "tuple[]",
+          "internalType": "struct Ethermail.Mail[]",
+          "components": [
+            { "name": "sender", "type": "address", "internalType": "address" },
+            { "name": "content", "type": "string", "internalType": "string" }
+          ]
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "inbox",
+      "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+      "outputs": [
+        { "name": "sender", "type": "address", "internalType": "address" },
+        { "name": "content", "type": "string", "internalType": "string" }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "send",
+      "inputs": [
+        { "name": "_content", "type": "string", "internalType": "string" }
+      ],
+      "outputs": [],
+      "stateMutability": "payable"
+    },
+    {
+      "type": "event",
+      "name": "NewInbox",
+      "inputs": [
+        {
+          "name": "sender",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "indexed": false,
+          "internalType": "string"
+        }
+      ],
+      "anonymous": false
+    }
+  ]
+}
