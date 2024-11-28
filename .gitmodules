@@ -19,3 +19,6 @@
 [submodule "aula6/web3-ens/lib/forge-std"]
 	path = aula6/web3-ens/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "aula6/web3-ens/lib/solady"]
+	path = aula6/web3-ens/lib/solady
+	url = https://github.com/vectorized/solady
