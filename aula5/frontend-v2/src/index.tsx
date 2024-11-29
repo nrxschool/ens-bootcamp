@@ -8,7 +8,7 @@ import { WagmiProvider } from "wagmi";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { config } from "./config/wagmi";
 import App from "./App";
-import { anvil, holesky, mainnet, optimism } from "wagmi/chains";
+import { mainnet } from "wagmi/chains";
 
 const queryClient = new QueryClient();
 

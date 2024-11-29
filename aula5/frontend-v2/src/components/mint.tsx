@@ -6,15 +6,23 @@ import {
   useReadContract,
 } from "wagmi";
 import abi from "./abi.json";
+import { Address } from "viem";
+
+let CONTRACT = process.env.REACT_APP_CONTRACT as Address;
+
+
+console.log(`CONTRACT: ${CONTRACT}`)
 
 export function Mint() {
   const [message, setMessage] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
   const [mints, setMints] = React.useState<string[] | undefined>([]);
 
+  // read env CONTRACT
+  
   const { data: hash, error, isPending, writeContract } = useWriteContract();
   const { data: mintsData } = useReadContract({
-    address: "0x2E983A1Ba5e8b38AAAeC4B440B9dDcFBf72E15d1",
+    address: CONTRACT,
     abi,
     functionName: "getMints",
   });
@@ -25,7 +33,7 @@ export function Mint() {
 
     try {
       writeContract({
-        address: "0x2E983A1Ba5e8b38AAAeC4B440B9dDcFBf72E15d1",
+        address: CONTRACT,
         abi,
         functionName: "mint",
         args: [message],
