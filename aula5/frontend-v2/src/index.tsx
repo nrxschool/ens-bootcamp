@@ -8,7 +8,7 @@ import { WagmiProvider } from "wagmi";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { config } from "./config/wagmi";
 import App from "./App";
-import { mainnet } from "wagmi/chains";
+import { holesky } from "wagmi/chains";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +20,7 @@ root.render(
   <React.StrictMode>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider initialChain={mainnet}>
+        <RainbowKitProvider initialChain={holesky}>
           <App />
         </RainbowKitProvider>
       </QueryClientProvider>
