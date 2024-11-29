@@ -5,7 +5,18 @@ import {ERC20} from "solady/tokens/ERC20.sol";
 import {Ownable} from "solady/auth/Ownable.sol";
 
 contract ENSToken is ERC20, Ownable {
+    mapping(string nickname => address owner) public ensNames;
+
+    string[] ensNamesArray;
     string[] public mints;
+
+    uint256 constant NAME_COST = 0.000001 ether;
+    uint256 nicknamesCount;
+    uint256 mintsCounter;
+
+    event NewName(address owner, string nickname);
+
+    error InsufficientBalance();
 
     constructor() {
         _initializeOwner(msg.sender);
@@ -24,6 +35,7 @@ contract ENSToken is ERC20, Ownable {
             revert("You already have Tokens");
         }
 
+        mintsCounter++;
         mints.push(message);
         _mint(msg.sender, 100 * 1e18);
     }
@@ -32,27 +44,27 @@ contract ENSToken is ERC20, Ownable {
         return mints;
     }
 
-    mapping(string nickname => address owner) ensNames;
-    uint256 NAME_COST = 0.000001 ether;
-    event NewName(address owner, string nickname);
-
     function createName(string calldata nickname) external payable {
         if (msg.value < NAME_COST) {
-            revert("Insufficient Balance");
+            revert InsufficientBalance();
         }
+
+        nicknamesCount++;
+        ensNamesArray.push(nickname);
 
         ensNames[nickname] = msg.sender;
 
         emit NewName(msg.sender, nickname);
     }
 
-    function transfer(
-        string calldata to,
-        uint256 amount
-    ) public returns (bool) {
+    function transfer(string calldata to, uint256 amount) public returns (bool) {
         if (ensNames[to] == address(0x0)) {
             revert("The nickname not exist!");
         }
         return transfer(ensNames[to], amount);
+    }
+
+    function withdraw() external {
+        payable(owner).transfer(address(this).balance);
     }
 }
