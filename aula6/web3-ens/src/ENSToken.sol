@@ -16,7 +16,6 @@ contract ENSToken is ERC20, Ownable {
 
     event NewName(address owner, string nickname);
 
-    error InsufficientBalance();
 
     constructor() {
         _initializeOwner(msg.sender);
@@ -65,6 +64,6 @@ contract ENSToken is ERC20, Ownable {
     }
 
     function withdraw() external {
-        payable(owner).transfer(address(this).balance);
+        payable(owner()).transfer(address(this).balance);
     }
 }
