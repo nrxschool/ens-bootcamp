@@ -1,6 +1,15 @@
-# ✅ 1° save your nickname
+# Token ERC20 ENS Based
 
-# ✅ 2° be a ERC20
+## Deploy Frontend on Vercel
 
-# 3° transfer(string to)
+- React, Next e Rainbow kit
+- Vercel deploy 
+- Tesnet e Faucets
 
+## ERC20 ENS Based
+
+- Criação de token ERC20
+- Compra de nickname
+- Consulta de nickname
+- Mapeamento de nickname para `address`
+- Transferências de Token usando apenas nickname
